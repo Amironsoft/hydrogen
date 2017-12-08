@@ -1,0 +1,55 @@
+<html>
+<head>
+	<script type="text/javascript" src="http://math.etsu.edu/LaTeXMathML/LaTeXMathML.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://math.etsu.edu/LaTeXMathML/LaTeXMathML.standardarticle.css" />
+</head>
+<body>
+	$\psi = a_0 \exp {(-\rho)} $
+	<br>
+	a<sub>0</sub>=<input type="" id="a0" value="0.1"><br>
+	<button onclick="start()">Start</button><br>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script type="text/javascript">
+		function start(){
+			var a0 = Number(document.getElementById("a0").value);
+			var dw = 5;
+			var circleRadii = [];
+			var N = 30;
+			for (var i = 0; i <= N; i++) {
+			   circleRadii.push(i*dw);
+			}
+			
+			// var circleRadii = [dw, dw*2, dw*3];
+			var maxw = Math.max.apply(null, circleRadii);
+			// alert(maxw);
+			maxw += 10;
+			d3.select("body").select("svg").remove();
+			var svgContainer = d3.select("body").append("svg")
+			                                     .attr("width", 2*maxw)
+			                                     .attr("height", 2*maxw);
+			svgContainer.append("circle")
+									.attr("cx", maxw)
+			                        .attr("cy", maxw)
+			                        .attr("fill-opacity", Math.exp(0/maxw))
+			                        .attr("r", dw)
+
+			var circles = svgContainer.selectAll("circle")
+			                          .data(circleRadii)
+			                          .enter()
+			                          .append("circle")
+
+			var circleAttributes = circles
+			                       .attr("cx", maxw)
+			                       .attr("cy", maxw)
+			                       .attr("fill", "none")
+			                       .attr("stroke", "black")
+			                       .attr("stroke-width", dw)
+			                       .attr("r", function (d) {return d; })
+			                       .style("stroke-opacity", function(d) {
+			                       	return Math.exp(-d/maxw);
+			                       });
+		}
+	start();
+	</script>
+</body>
+</html>
